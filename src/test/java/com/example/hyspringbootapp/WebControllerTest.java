@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(value = WebController.class, properties = "app.version=1.2.3")
+@WebMvcTest(value = WebController.class, properties = {
+        "app.version=1.2.3",
+        "app.private-address=10.0.1.23"
+})
 class WebControllerTest {
 
     @Autowired
@@ -20,7 +23,8 @@ class WebControllerTest {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Hello, Spring Boot!"))
-                .andExpect(jsonPath("$.version").value("1.2.3"));
+                .andExpect(jsonPath("$.version").value("1.2.3"))
+                .andExpect(jsonPath("$.privateAddress").value("10.0.1.23"));
     }
 
     @Test

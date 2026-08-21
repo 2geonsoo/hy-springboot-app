@@ -133,6 +133,23 @@ java -Dapp.version=1.0.0 -jar target\hy-springboot-app-0.0.1-SNAPSHOT.jar
 
 `--app.version` 또는 `-Dapp.version`을 사용하면 `APP_VERSION` 환경 변수보다 우선 적용됩니다. 아무 값도 전달하지 않으면 버전은 `dev`가 됩니다.
 
+### EC2 사설 주소 설정
+
+`/` 응답의 `privateAddress`에는 실행 중인 서버에서 탐색한 사설 IPv4 주소가 반환됩니다. EC2에서는 일반적으로 `10.x.x.x`, `172.16.x.x`~`172.31.x.x`, `192.168.x.x` 형태의 주소가 표시됩니다.
+
+자동 탐색 결과 대신 주소를 직접 지정하려면 `application.properties`에 다음을 추가합니다.
+
+```properties
+app.private-address=10.0.1.23
+```
+
+또는 JAR 실행 시 Spring Boot 명령줄 프로퍼티로 전달할 수 있습니다.
+
+```bash
+java -jar target/hy-springboot-app-0.0.1-SNAPSHOT.jar \
+  --app.private-address=10.0.1.23
+```
+
 ## 5. 애플리케이션 실행
 
 ### Maven으로 실행
@@ -187,10 +204,10 @@ curl http://localhost:8080/timecheck
 
 ### `/`
 
-버전을 설정하지 않으면 `version` 값은 `dev`입니다.
+`/` 응답에는 `message`, `version`, `privateAddress`가 반환됩니다. 버전을 설정하지 않으면 `version` 값은 `dev`입니다.
 
 ```json
-{"message":"Hello, Spring Boot!","version":"1.0.0"}
+{"message":"Hello, Spring Boot!","version":"1.0.0","privateAddress":"10.0.1.23"}
 ```
 
 ### `/health`
